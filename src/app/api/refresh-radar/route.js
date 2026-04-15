@@ -34,8 +34,8 @@ async function fetchYahoo(symbol, interval, range) {
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
 async function callGemini(apiKey, prompt, maxRetries = 2) {
-  // Strategy 1: Fallback (Degradation) - from 2.0 to 1.5 if limited
-  const models = ['gemini-2.0-flash', 'gemini-1.5-flash'];
+  // Strategy 1: Fallback (Degradation) - Try 2.5, then 2.0, then 2.0-lite if limited
+  const models = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-2.0-flash-lite'];
   let lastError;
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
