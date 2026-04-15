@@ -140,7 +140,19 @@ export default function MarketRadar() {
               <Target size={18} className="glow-text" />
               <span style={{ fontWeight: 600 }}>AI 大腦思路</span>
             </div>
-            <p className="text-small" style={{ lineHeight: '1.7' }}>{ai_prediction?.reasoning || '尚無預測，請點擊「即時刷新 AI」取得分析'}</p>
+            <p className="text-small" style={{ lineHeight: '1.7', marginBottom: '12px' }}>
+               {ai_prediction?.reasoning || '尚無預測，請點擊「即時刷新 AI」取得分析'}
+            </p>
+            {ai_prediction?.strategy_advice && (
+              <>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '12px' }}>
+                  <span style={{ fontWeight: 600, color: 'var(--accent-primary)', fontSize: '0.9rem' }}>💡 執行建議</span>
+                </div>
+                <p className="text-small" style={{ lineHeight: '1.7', margin: 0, color: 'var(--text-secondary)' }}>
+                  {ai_prediction.strategy_advice}
+                </p>
+              </>
+            )}
           </div>
         </div>
 
