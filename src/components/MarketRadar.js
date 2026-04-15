@@ -9,6 +9,7 @@ export default function MarketRadar() {
   const [radarData, setRadarData] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState(null);
+  const [aiWarning, setAiWarning] = useState(null);
   const [lastRefreshed, setLastRefreshed] = useState(null);
 
   // Load static data on mount as default
@@ -21,11 +22,14 @@ export default function MarketRadar() {
   const handleRefresh = async () => {
     setIsRefreshing(true);
     setError(null);
+    setAiWarning(null);
     try {
       const res = await fetch('/api/refresh-radar');
       if (!res.ok) throw new Error(`Server error: ${res.status}`);
       const data = await res.json();
       if (data.error) throw new Error(data.error);
+      // ai_error means market data is OK but Gemini quota hit
+      if (data.ai_error) setAiWarning(data.ai_error);
       setRadarData(data);
       setLastRefreshed(new Date().toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
     } catch (err) {
@@ -83,8 +87,13 @@ export default function MarketRadar() {
       </div>
 
       {error && (
-        <div style={{ background: 'var(--color-danger-bg)', border: '1px solid var(--color-danger)', borderRadius: '8px', padding: '12px', marginBottom: '16px', color: 'var(--color-danger)', fontSize: '0.85rem' }}>
-          ⚠️ 刷新失敗：{error}
+        <div style={{ background: 'rgba(255,59,48,0.1)', border: '1px solid var(--color-danger)', borderRadius: '8px', padding: '12px', marginBottom: '16px', color: 'var(--color-danger)', fontSize: '0.85rem' }}>
+          ❌ 刷新失敗：{error}
+        </div>
+      )}
+      {aiWarning && (
+        <div style={{ background: 'rgba(255,200,0,0.08)', border: '1px solid #f5a623', borderRadius: '8px', padding: '12px', marginBottom: '16px', color: '#f5a623', fontSize: '0.85rem' }}>
+          {aiWarning}
         </div>
       )}
 

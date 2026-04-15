@@ -42,3 +42,4 @@ next-env.d.ts
 
 # temp dirs
 temp_clone/
+node_modules
