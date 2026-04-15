@@ -1,0 +1,218 @@
+[
+    {
+        "target_date": "2026-03-23",
+        "reference_date": "2026-03-23",
+        "market_context": {
+            "trend_structure": "📉 強勢空頭排列 (Close < 5MA < 20MA < 60MA)",
+            "vix_close": 29.89,
+            "yesterday_amplitude": 322.5,
+            "avg_amplitude_20d": 501.96
+        },
+        "trader_notes": "無主觀筆記",
+        "ai_prediction": {
+            "regime": "strong_trend",
+            "reasoning": "今日市場處於【強勢空頭排列】，這是判斷市場方向最核心的依據。儘管昨日實際振幅較近20日平均振幅為窄，但這在強勢趨勢中常被視為短暫的盤整或蓄勢，而非趨勢反轉。高VIX恐慌指數 (29.89) 進一步印證市場存在高度不確定性與潛在的劇烈波動，這與強趨勢日（特別是暴跌全壘打）的條件相符。綜合判斷，今日單邊下跌行情的機率極高，市場可能在經歷昨日的收斂後，迎來振幅擴大的強勢空頭延續。",
+            "base_1_points": 375,
+            "base_2_points": 550,
+            "home_run_points": 875,
+            "strategy_advice": "今日應以『做空』為主，尋找反彈至關鍵阻力位（如5MA或前低轉阻力）的機會進場。對於【2口單】策略：\n1. 第一口單：在達到【一壘目標 (375點)】時嚴格停利，鎖定保底利潤。\n2. 第二口單：在第一口單停利後，將第二口單的停損點移動至進場成本或更緊密的移動停損。目標瞄準【二壘目標 (550點)】，若市場動能持續放大，出現暴跌加速跡象，則可嘗試追逐【全壘打目標 (875點)】，並利用移動停損保護已實現的浮動利潤，以捕捉單邊趨勢日的巨大潛力。"
+        },
+        "actual_result": {
+            "actual_high": 24763.5,
+            "actual_low": 23772.75,
+            "actual_amplitude": 990.75,
+            "base_1_target": 0.0,
+            "base_2_target": 0.0,
+            "base_1_hit": false,
+            "base_2_hit": false
+        }
+    },
+    {
+        "target_date": "2026-03-23",
+        "reference_date": "2026-03-23",
+        "market_context": {
+            "trend_structure": "📉 強勢空頭排列",
+            "vix_close": 30.01,
+            "yesterday_amplitude": 322.5,
+            "avg_amplitude_20d": 501.96
+        },
+        "trader_notes": "無主觀筆記",
+        "ai_prediction": {
+            "regime": "strong_trend",
+            "reasoning": "今日盤勢定調為強勢空頭排列，主要基於客觀數據顯示整體趨勢為📉強勢空頭排列，且關鍵防守均線 (5MA=24349.31, 20MA=24772.95) 均遠高於目前收盤價 (23860.75)，形成明顯的壓力。VIX恐慌指數高達30.01，進一步確認市場的避險情緒與高波動性。在強勢空頭趨勢中，最佳的進場策略是等待價格反彈至關鍵阻力位後做空。我們選擇樞紐點 (Pivot=23909.42) 附近作為進場區間，因為此處是市場潛在的反彈壓力位，提供較佳的風險報酬比。",
+            "base_1_points": null,
+            "base_2_points": null,
+            "home_run_points": null,
+            "strategy_advice": null
+        },
+        "actual_result": {
+            "actual_high": 24763.5,
+            "actual_low": 23772.75,
+            "actual_amplitude": 990.75,
+            "base_1_target": 0.0,
+            "base_2_target": 0.0,
+            "base_1_hit": false,
+            "base_2_hit": false
+        }
+    },
+    {
+        "target_date": "2026-03-23",
+        "reference_date": "2026-03-23",
+        "market_context": {
+            "trend_structure": "📉 強勢空頭排列",
+            "vix_close": 30.21,
+            "yesterday_amplitude": 322.5,
+            "avg_amplitude_20d": 501.96,
+            "pivot_points": {
+                "r2": 24235.67,
+                "r1": 24053.83,
+                "pivot": 23913.17,
+                "s1": 23731.33,
+                "s2": 23590.67
+            }
+        },
+        "trader_notes": "無主觀筆記",
+        "ai_prediction": {
+            "regime": "strong_trend",
+            "trade_direction": "Short (做空)",
+            "suggested_entry_zone": "23900.0 - 23930.0",
+            "stop_loss_price": 24080.0,
+            "target_prices": {
+                "base_1": 23731.0,
+                "base_2": 23590.0
+            },
+            "reasoning": "市場處於強勢空頭排列，VIX恐慌指數高漲顯示市場情緒悲觀，且目前收盤價遠低於關鍵防守均線（5MA, 20MA）與Pivot中軸。這明確指出今日盤勢將延續空頭趨勢。我們預期任何反彈至關鍵阻力區（如Pivot點）皆為建立空單的良好機會。進場區間選擇在Pivot點附近，旨在捕捉反彈無力後的下殺動能。",
+            "strategy_advice": "於建議進場區間 (23900.0 - 23930.0) 分批或一次性建立 2 口空單。第一口單的目標價設定於 S1 (23731.0)。當第一口單觸及目標價並平倉後，立即將第二口單的停損點移動至進場成本價或略低於進場區間，以鎖定部分利潤並降低風險。第二口單的目標價設定於 S2 (23590.0)。請嚴格遵守停損價格 24080.0，若價格觸及，應立即平倉所有部位，避免損失擴大。"
+        },
+        "actual_result": {
+            "actual_high": 24763.5,
+            "actual_low": 23772.75,
+            "actual_amplitude": 990.75,
+            "base_1_target": 23731.0,
+            "base_2_target": 23590.0,
+            "base_1_hit": false,
+            "base_2_hit": false
+        }
+    },
+    {
+        "target_date": "2026-03-25",
+        "reference_date": "2026-03-24",
+        "market_context": {
+            "trend_structure": "📉 強勢空頭排列",
+            "vix_close": 26.95,
+            "yesterday_amplitude": 990.75,
+            "avg_amplitude_20d": 535.6,
+            "pivot_points": {
+                "r2": 25305.58,
+                "r1": 24856.92,
+                "pivot": 24314.83,
+                "s1": 23866.17,
+                "s2": 23324.08
+            }
+        },
+        "trader_notes": "無主觀筆記",
+        "ai_prediction": {
+            "regime": "exhaustion_reversal",
+            "trade_direction": "Long",
+            "suggested_entry_zone": "24300 - 24320",
+            "stop_loss_price": "24270",
+            "target_prices": {
+                "base_1": "24450",
+                "base_2": "24550"
+            },
+            "reasoning": "日K雖為強勢空頭排列，但60分K盤中即時振幅已消耗高達77.1%，遠超70%的警戒線，顯示趨勢動能已嚴重力竭。預期市場將出現空頭獲利了結的反彈行情，故不宜順勢追空，應採逆勢做多策略。",
+            "strategy_advice": "考量盤中振幅力竭，建議採取逆勢做多策略。第一口單可在24300-24320區間進場，目標價24450 (接近5MA)，獲利後可將停損上移至成本價。第二口單若市場持續反彈，可於相同區間進場，目標價24550。務必嚴格執行24270的停損，若跌破此價位，反彈預期失效，應立即出場。"
+        },
+        "actual_result": {
+            "actual_high": 24494.0,
+            "actual_low": 24320.25,
+            "actual_amplitude": 173.75,
+            "base_1_target": 24450.0,
+            "base_2_target": 24550.0,
+            "base_1_hit": true,
+            "base_2_hit": false
+        }
+    },
+    {
+        "target_date": "2026-03-25",
+        "reference_date": "2026-03-24",
+        "market_context": {
+            "trend_structure": "📉 強勢空頭排列",
+            "vix_close": 26.95,
+            "yesterday_amplitude": 990.75,
+            "avg_amplitude_20d": 535.6,
+            "pivot_points": {
+                "r2": 25305.58,
+                "r1": 24856.92,
+                "pivot": 24314.83,
+                "s1": 23866.17,
+                "s2": 23324.08
+            }
+        },
+        "trader_notes": "無主觀筆記",
+        "ai_prediction": {
+            "regime": "strong_trend",
+            "trade_direction": "Short",
+            "suggested_entry_zone": "24280 - 24310",
+            "stop_loss_price": "24480",
+            "target_prices": {
+                "base_1": "23866.17",
+                "base_2": "23700"
+            },
+            "reasoning": "日K線呈現強勢空頭排列，整體趨勢明確向下。目前最新即時價格 (24341.5) 位於中軸 (Pivot=24314.83) 附近，顯示多空在此處拉鋸。然而，盤中已消耗振幅比例僅為 32.4%，遠低於 70% 的力竭門檻，這表示今日趨勢動能仍有充足的發揮空間，順勢追空策略仍具備高勝率。",
+            "strategy_advice": "鑑於日K強勢空頭趨勢，且盤中振幅消耗率仍低，我們將採取分批進場的順勢做空策略：\n1.  第一口單 (50%倉位)：若價格跌破中軸 (Pivot=24314.83) 並進入 24280 - 24310 區間，顯示空頭力量佔優，可在此區間建立第一筆空單。\n2.  第二口單 (50%倉位)：若價格在跌破中軸後，出現小幅反彈至 24330 - 24350 區間，但未能站穩並再次回落，或在 24350-24380 附近出現明顯的空頭抵抗訊號，可在此處加碼第二筆空單。\n防守建議：所有空單的停損點統一設置在 24480，此價位高於 5MA (24458.81)，能有效防範短期反彈。當第一目標價 (S1=23866.17) 達成時，可將剩餘倉位的停損點移動至進場成本或 S1上方，確保獲利並讓第二口單有機會挑戰更深層的支撐。"
+        },
+        "actual_result": {
+            "actual_high": 24540.0,
+            "actual_low": 24287.25,
+            "actual_amplitude": 252.75,
+            "base_1_target": 23866.17,
+            "base_2_target": 23700.0,
+            "base_1_hit": false,
+            "base_2_hit": false
+        }
+    },
+    {
+        "target_date": "2026-03-27",
+        "reference_date": "2026-03-26",
+        "market_context": {
+            "daily_trend": "🐻 日K 偏空震盪",
+            "h1_trend": "🔻 60分K 強勢空頭排列 (日內強空)",
+            "current_price": 23841.75,
+            "intraday_amplitude": 104.5,
+            "amplitude_exhaustion_rate": 19.9,
+            "vix_close": 27.44,
+            "yesterday_amplitude": 252.75,
+            "avg_amplitude_20d": 524.41,
+            "pivot_points": {
+                "r2": 24651.08,
+                "r1": 24509.42,
+                "pivot": 24398.33,
+                "s1": 24256.67,
+                "s2": 24145.58
+            }
+        },
+        "trader_notes": "無主觀筆記",
+        "ai_prediction": {
+            "regime": "trend_following",
+            "trade_direction": "Short (做空)",
+            "suggested_entry_zone": "23900 - 24000 (等待價格反彈至此區間，避免追殺低點，利用反彈作為進場空單的機會)",
+            "stop_loss_price": "24300 (防守S1樞紐點24256.67上方，若突破此區間則空頭結構可能被破壞)",
+            "target_prices": {
+                "base_1": "23750",
+                "base_2": "23600"
+            },
+            "reasoning": "日K大格局定調為偏空震盪，而60分K當沖方向更是明確的強勢空頭排列。根據總監守則，當沖應以60分K為主要依據，且兩者方向一致，形成強烈的空頭共振，因此今日策略定調為順勢做空，預期有較大的下行空間。",
+            "strategy_advice": "今日為強勢空頭排列，建議採取分批進場策略。當價格反彈進入 23900 - 24000 區間時，可先建立第一口空單 (例如在24000附近)。若價格持續在區間內震盪或再次確認弱勢，可於 23900 附近建立第二口空單，以取得較佳的平均成本。第一口單達到 23750 目標價時，可先獲利了結一半部位，並將剩餘第二口單的停損點移動至進場成本附近 (或略低於第一口單的進場價)，確保此單至少不虧損。若市場持續下行至 23600，則可考慮全部獲利了結，或依據盤勢發展，使用移動停損追蹤利潤，例如將停損點設在近期小波段高點下方。"
+        },
+        "actual_result": {
+            "actual_high": 23975.75,
+            "actual_low": 23231.0,
+            "actual_amplitude": 744.75,
+            "base_1_target": 23750.0,
+            "base_2_target": 23600.0,
+            "base_1_hit": true,
+            "base_2_hit": true
+        }
+    }
+]
