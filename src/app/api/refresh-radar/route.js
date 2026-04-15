@@ -31,23 +31,58 @@ async function fetchYahoo(symbol, interval, range) {
 }
 
 // ── Gemini REST helper ──────────────────────────────────────
-async function callGemini(apiKey, prompt) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-  const body = {
-    contents: [{ role: 'user', parts: [{ text: prompt }] }],
-    generationConfig: { responseMimeType: 'application/json', temperature: 0.15 },
-  };
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`Gemini error ${res.status}: ${err.slice(0, 400)}`);
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
+async function callGemini(apiKey, prompt, maxRetries = 2) {
+  // Strategy 1: Fallback (Degradation) - from 2.0 to 1.5 if limited
+  const models = ['gemini-2.0-flash', 'gemini-1.5-flash'];
+  let lastError;
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    const model = models[Math.min(attempt, models.length - 1)];
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+    const body = {
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      generationConfig: { responseMimeType: 'application/json', temperature: 0.15 },
+    };
+    
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) {
+        const errText = await res.text();
+        const status = res.status;
+        
+        // 429 Too Many Requests or 503 Overloaded
+        if (status === 429 || status === 503) {
+          const errMsg = `Gemini rate limit / overload (${status})`;
+          if (attempt < maxRetries) {
+            // Strategy 2: Exponential Backoff (2s, 4s, 8s)
+            const waitTime = Math.pow(2, attempt + 1) * 1000;
+            console.warn(`[Attempt ${attempt + 1}] failed with ${status}. Retrying in ${waitTime/1000}s...`);
+            await delay(waitTime);
+            continue;
+          }
+          throw new Error(`${errMsg}: ${errText.slice(0, 200)}`);
+        }
+        throw new Error(`Gemini error ${status}: ${errText.slice(0, 400)}`);
+      }
+      
+      const data = await res.json();
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+    } catch (err) {
+      lastError = err;
+      // If it's a structural error (not API limit or fetch error), break immediately
+      if (!err.message.includes('429') && !err.message.includes('503') && !err.message.includes('fetch')) {
+        throw err; 
+      }
+    }
   }
-  const data = await res.json();
-  return data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+  throw lastError;
 }
 
 // ── Math helpers ─────────────────────────────────────────────
@@ -177,14 +212,11 @@ export async function GET() {
     // ── 4. AI History summary for prompt ─────────────────────
     let historySummary = '（暫無歷史決策記錄）';
     if (aiHistory.length > 0) {
-      const recent = aiHistory.slice(-5);
+      // Strategy 3: Filtration (只抽最近 3 筆，精簡屬性長度)
+      const recent = aiHistory.slice(-3);
       historySummary = recent.map((h, i) =>
-        `第${i+1}筆 [${h.Date || h.date || '未知日期'}] ` +
-        `方向:${h.AI_Direction || h.direction || '-'} | ` +
-        `進場區間:${h.Entry_Zone || h.entryZone || '-'} | ` +
-        `防守:${h.Stop_Loss || h.stopLoss || '-'} | ` +
-        `結果驗證:${h.Outcome || h.outcome || '尚未填寫'}`
-      ).join('\n');
+        `[${h.Date || h.date || '未知'}]方向:${h.AI_Direction || h.direction},防守:${h.Stop_Loss || h.stopLoss},結果:${h.Outcome || h.outcome || '無'}`
+      ).join(' | ');
     }
 
     // ── 5. Build Gemini prompt ────────────────────────────────
