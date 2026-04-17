@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { Activity, Crosshair, Target, RefreshCw, Loader2, TrendingDown, TrendingUp, BarChart2 } from 'lucide-react';
-import staticData from '../data/ai_history.json';
 import './MarketRadar.css';
 
 export default function MarketRadar() {
@@ -12,11 +11,46 @@ export default function MarketRadar() {
   const [aiWarning, setAiWarning] = useState(null);
   const [lastRefreshed, setLastRefreshed] = useState(null);
 
-  // Load static data on mount as default
+  // Load latest AI history from Sheet on mount
   useEffect(() => {
-    if (staticData && staticData.length > 0) {
-      setRadarData(staticData[staticData.length - 1]); // latest entry
+    async function loadLatestHistory() {
+      try {
+        const res = await fetch('/api/ai-history');
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.length > 0) {
+            const latest = data[0]; // data is already reversed by API
+            setRadarData({
+              target_date: latest.Date || latest.date || '',
+              market_context: {
+                current_price: '--',
+                intraday_amplitude: '--',
+                avg_amplitude_20d: '--',
+                amplitude_exhaustion_pct: '--',
+                vix_close: latest.VIX || latest.vix || '--',
+                daily_trend: latest.Daily_Trend || latest.dailyTrend || '--',
+                h1_trend: latest.H1_Trend || latest.h1Trend || '--'
+              },
+              ai_prediction: {
+                trade_direction: latest.AI_Direction || latest.aiDirection || 'Neutral',
+                suggested_entry_zone: latest.Entry_Zone || latest.entryZone || '--',
+                stop_loss_price: latest.Stop_Loss || latest.stopLoss || '--',
+                target_prices: {
+                  base_1: latest.Target1 || latest.target1 || '--',
+                  base_2: latest.Target2 || latest.target2 || '--'
+                },
+                reasoning: latest.Reasoning || latest.reasoning || '',
+                regime: latest.Regime || latest.regime || ''
+              }
+            });
+            return;
+          }
+        }
+      } catch (err) {
+        console.error('Failed to load initial history for radar', err);
+      }
     }
+    loadLatestHistory();
   }, []);
 
   const handleRefresh = async () => {

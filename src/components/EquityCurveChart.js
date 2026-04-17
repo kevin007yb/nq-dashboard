@@ -2,12 +2,16 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { TrendingUp, Loader2, AlertCircle } from 'lucide-react';
+import { TrendingUp, Loader2, AlertCircle, ChevronLeft, ChevronRight, List } from 'lucide-react';
 
 export default function EquityCurveChart() {
   const [trades, setTrades] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  // Pagination state for trade list
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   useEffect(() => {
     async function fetchTrades() {
@@ -86,8 +90,11 @@ export default function EquityCurveChart() {
   };
 
   return (
-    <div className="glass-panel animate-fade-in" style={{ gridColumn: '1 / -1', height: '460px', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
+    <div className="glass-panel animate-fade-in" style={{ gridColumn: '1 / -1', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      
+      {/* Chart Section */}
+      <div style={{ display: 'flex', flexDirection: 'column', height: '460px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
         <h2 style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
           <TrendingUp size={24} className="glow-text" />
           資金曲線 (Equity Curve)
@@ -153,6 +160,79 @@ export default function EquityCurveChart() {
           </ResponsiveContainer>
         )}
       </div>
+
+      {/* Tarde List Section */}
+      <div style={{ borderTop: '1px solid var(--border-light)', paddingTop: '24px' }}>
+        <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: 0, marginBottom: '16px', color: 'var(--text-primary)' }}>
+          <List size={20} className="glow-text" />
+          近期交易紀錄
+        </h3>
+        
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid var(--border-light)', color: 'var(--text-secondary)' }}>
+                <th style={{ padding: '12px 8px' }}>日期</th>
+                <th style={{ padding: '12px 8px' }}>方向</th>
+                <th style={{ padding: '12px 8px' }}>口數</th>
+                <th style={{ padding: '12px 8px' }}>進場價</th>
+                <th style={{ padding: '12px 8px' }}>出場價</th>
+                <th style={{ padding: '12px 8px' }}>單筆損益</th>
+              </tr>
+            </thead>
+            <tbody>
+              {trades.length === 0 ? (
+                <tr><td colSpan="6" style={{ textAlign: 'center', padding: '24px', color: 'var(--text-muted)' }}>暫無紀錄</td></tr>
+              ) : (
+                [...trades].reverse().slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((t, i) => {
+                  const pnlKey = Object.keys(t).find(k => k === 'profit' || k === 'pnl' || k === '損益') || 'profit';
+                  const dateKey = Object.keys(t).find(k => k === 'date' || k === '日期') || 'date';
+                  const dirKey = Object.keys(t).find(k => k === 'direction' || k === '方向') || 'direction';
+                  const pnl = parseFloat(t[pnlKey]) || 0;
+                  const isPos = pnl >= 0;
+                  
+                  return (
+                    <tr key={i} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', transition: 'background 0.2s' }}>
+                      <td style={{ padding: '12px 8px' }}>{String(t[dateKey] || '').slice(0, 10)}</td>
+                      <td style={{ padding: '12px 8px', fontWeight: 600 }}>{t[dirKey]}</td>
+                      <td style={{ padding: '12px 8px' }}>{t.quantity || t['口數'] || '-'}</td>
+                      <td style={{ padding: '12px 8px' }}>{t.entryPrice || t['進場'] || '-'}</td>
+                      <td style={{ padding: '12px 8px' }}>{t.exitPrice || t['出場'] || '-'}</td>
+                      <td style={{ padding: '12px 8px', fontWeight: 600, color: isPos ? 'var(--color-success)' : 'var(--color-danger)' }}>
+                        {isPos ? '+' : ''}{pnl}
+                      </td>
+                    </tr>
+                  )
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Pagination */}
+        {Math.ceil(trades.length / itemsPerPage) > 1 && (
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '8px', marginTop: '16px' }}>
+            <button 
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(p => p - 1)}
+              style={{ background: 'var(--bg-main)', border: '1px solid var(--border-light)', color: 'white', padding: '6px', borderRadius: '6px', cursor: 'pointer', opacity: currentPage === 1 ? 0.3 : 1 }}
+            >
+              <ChevronLeft size={16} />
+            </button>
+            <span className="text-small" style={{ margin: '0 8px' }}>
+              頁數 {currentPage} / {Math.ceil(trades.length / itemsPerPage)}
+            </span>
+            <button 
+              disabled={currentPage === Math.ceil(trades.length / itemsPerPage)}
+              onClick={() => setCurrentPage(p => p + 1)}
+              style={{ background: 'var(--bg-main)', border: '1px solid var(--border-light)', color: 'white', padding: '6px', borderRadius: '6px', cursor: 'pointer', opacity: currentPage === Math.ceil(trades.length / itemsPerPage) ? 0.3 : 1 }}
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
+        )}
+      </div>
+
     </div>
   );
 }
