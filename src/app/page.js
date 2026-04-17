@@ -1,7 +1,7 @@
-import React from 'react';
 import MarketRadar from '../components/MarketRadar';
 import EquityCurveChart from '../components/EquityCurveChart';
 import TradeReviewList from '../components/TradeReviewList';
+import RiskDirector from '../components/RiskDirector';
 import { ActivitySquare } from 'lucide-react';
 
 export default function Home() {
@@ -20,6 +20,7 @@ export default function Home() {
       </header>
       
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '24px' }}>
+        <RiskDirector />
         <MarketRadar />
         <EquityCurveChart />
         <TradeReviewList />
