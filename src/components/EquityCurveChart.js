@@ -160,8 +160,9 @@ export default function EquityCurveChart() {
           </ResponsiveContainer>
         )}
       </div>
+      </div>
 
-      {/* Tarde List Section */}
+      {/* Trade List Section */}
       <div style={{ borderTop: '1px solid var(--border-light)', paddingTop: '24px' }}>
         <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: 0, marginBottom: '16px', color: 'var(--text-primary)' }}>
           <List size={20} className="glow-text" />
