@@ -290,8 +290,8 @@ ${historySummary}
       };
     }
 
-    // ── 7. Save AI decision to GAS (fire & forget, only when AI responded) ─
-    if (gasUrl && !aiError) {
+    // ── 7. Save AI decision to GAS (fire & forget, even if fallback) ─
+    if (gasUrl) {
       saveAIDecision(gasUrl, {
         date: dateStr,
         aiDirection: aiDecision.trade_direction || '',
